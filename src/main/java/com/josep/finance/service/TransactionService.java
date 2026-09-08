@@ -1,6 +1,7 @@
 package com.josep.finance.service;
 
 import com.josep.finance.model.Transaction;
+import com.josep.finance.repository.TransactionRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -11,6 +12,19 @@ public class TransactionService {
     private final ObservableList<Transaction> transactions =
             FXCollections.observableArrayList();
 
+    private final TransactionRepository repository;
+
+    public TransactionService() {
+
+        repository = new TransactionRepository();
+
+        repository.initializeDatabase();
+
+        transactions.addAll(
+                repository.findAll()
+        );
+    }
+
     // Get transactions
 
     public ObservableList<Transaction> getTransactions() {
@@ -20,6 +34,9 @@ public class TransactionService {
     // Add transaction
 
     public void addTransaction(Transaction transaction) {
+
+        repository.save(transaction);
+
         transactions.add(transaction);
     }
 
@@ -31,7 +48,10 @@ public class TransactionService {
                 .filter(transaction ->
                         transaction.getType().equals("Income"))
                 .map(Transaction::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(
+                        BigDecimal.ZERO,
+                        BigDecimal::add
+                );
     }
 
     // Calculate total expenses
@@ -42,12 +62,16 @@ public class TransactionService {
                 .filter(transaction ->
                         transaction.getType().equals("Expense"))
                 .map(Transaction::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(
+                        BigDecimal.ZERO,
+                        BigDecimal::add
+                );
     }
 
     // Calculate current balance
 
     public BigDecimal getBalance() {
+
         return getTotalIncome()
                 .subtract(getTotalExpenses());
     }
