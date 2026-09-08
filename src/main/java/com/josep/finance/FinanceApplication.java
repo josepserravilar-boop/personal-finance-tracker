@@ -1,35 +1,40 @@
 package com.josep.finance;
 
+import com.josep.finance.service.TransactionService;
+import com.josep.finance.view.DashboardView;
+import com.josep.finance.view.TransactionsView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import com.josep.finance.view.*;
-
 
 public class FinanceApplication extends Application {
 
     @Override
     public void start(Stage stage) {
 
-        // =========================
-        // MAIN LAYOUT
-        // =========================
+        // Main layout
 
         BorderPane root = new BorderPane();
 
+        // Shared service
 
-        // =========================
-        // SIDEBAR
-        // =========================
+        TransactionService transactionService =
+                new TransactionService();
+
+        DashboardView dashboardView =
+                new DashboardView(transactionService);
+
+        TransactionsView transactionsView =
+                new TransactionsView(transactionService);
+
+        // Sidebar
 
         VBox sidebar = new VBox(15);
         sidebar.setPadding(new Insets(30));
@@ -59,10 +64,17 @@ public class FinanceApplication extends Application {
                 createIcon("settings.png")
         );
 
-        dashboardButton.getStyleClass().add("menu-button");
-        transactionsButton.getStyleClass().add("menu-button");
-        reportsButton.getStyleClass().add("menu-button");
-        settingsButton.getStyleClass().add("menu-button");
+        dashboardButton.getStyleClass()
+                .add("menu-button");
+
+        transactionsButton.getStyleClass()
+                .add("menu-button");
+
+        reportsButton.getStyleClass()
+                .add("menu-button");
+
+        settingsButton.getStyleClass()
+                .add("menu-button");
 
         sidebar.getChildren().addAll(
                 logo,
@@ -72,84 +84,29 @@ public class FinanceApplication extends Application {
                 settingsButton
         );
 
+        // Navigation
 
-        // =========================
-        // DASHBOARD CONTENT
-        // =========================
-
-        VBox dashboardContent = new VBox(25);
-        dashboardContent.setPadding(new Insets(35));
-        dashboardContent.getStyleClass().add("content");
-
-        Label title = new Label("Dashboard");
-        title.getStyleClass().add("page-title");
-
-        HBox cards = new HBox(20);
-
-        VBox balanceCard = createCard(
-                "Current Balance",
-                "2,450.00 €"
+        dashboardButton.setOnAction(event ->
+                root.setCenter(
+                        dashboardView.createView()
+                )
         );
 
-        VBox incomeCard = createCard(
-                "Income",
-                "1,800.00 €"
+        transactionsButton.setOnAction(event ->
+                root.setCenter(
+                        transactionsView.createView()
+                )
         );
 
-        VBox expensesCard = createCard(
-                "Expenses",
-                "950.00 €"
-        );
-
-        VBox savingsCard = createCard(
-                "Savings",
-                "850.00 €"
-        );
-
-        cards.getChildren().addAll(
-                balanceCard,
-                incomeCard,
-                expensesCard,
-                savingsCard
-        );
-
-        dashboardContent.getChildren().addAll(
-                title,
-                cards
-        );
-
-
-        // =========================
-        // TRANSACTIONS VIEW
-        // =========================
-
-        TransactionsView transactionsView =
-                new TransactionsView();
-
-
-        // =========================
-        // NAVIGATION
-        // =========================
-
-        dashboardButton.setOnAction(event -> {
-            root.setCenter(dashboardContent);
-        });
-
-        transactionsButton.setOnAction(event -> {
-            root.setCenter(
-                    transactionsView.createView()
-            );
-        });
-
-
-        // =========================
-        // BUILD MAIN WINDOW
-        // =========================
+        // Build main window
 
         root.setLeft(sidebar);
-        root.setCenter(dashboardContent);
+        root.setCenter(
+                dashboardView.createView()
+        );
 
-        Scene scene = new Scene(root, 1100, 700);
+        Scene scene =
+                new Scene(root, 1100, 700);
 
         scene.getStylesheets().add(
                 getClass()
@@ -157,45 +114,15 @@ public class FinanceApplication extends Application {
                         .toExternalForm()
         );
 
-        stage.setTitle("Personal Finance Tracker");
+        stage.setTitle(
+                "Personal Finance Tracker"
+        );
+
         stage.setScene(scene);
         stage.show();
     }
 
-
-    // =========================
-    // CREATE DASHBOARD CARD
-    // =========================
-
-    private VBox createCard(String title, String value) {
-
-        Label titleLabel = new Label(title);
-        titleLabel.getStyleClass().add("card-title");
-
-        Label valueLabel = new Label(value);
-        valueLabel.getStyleClass().add("card-value");
-
-        VBox card = new VBox(10);
-
-        card.setAlignment(Pos.CENTER_LEFT);
-        card.setPadding(new Insets(20));
-        card.setPrefWidth(180);
-        card.setPrefHeight(120);
-
-        card.getStyleClass().add("card");
-
-        card.getChildren().addAll(
-                titleLabel,
-                valueLabel
-        );
-
-        return card;
-    }
-
-
-    // =========================
-    // CREATE MENU ICON
-    // =========================
+    // Create menu icon
 
     private ImageView createIcon(String fileName) {
 
@@ -205,7 +132,8 @@ public class FinanceApplication extends Application {
                 )
         );
 
-        ImageView imageView = new ImageView(image);
+        ImageView imageView =
+                new ImageView(image);
 
         imageView.setFitWidth(20);
         imageView.setFitHeight(20);
@@ -214,10 +142,7 @@ public class FinanceApplication extends Application {
         return imageView;
     }
 
-
-    // =========================
-    // APPLICATION ENTRY POINT
-    // =========================
+    // Application entry point
 
     public static void main(String[] args) {
         launch(args);
