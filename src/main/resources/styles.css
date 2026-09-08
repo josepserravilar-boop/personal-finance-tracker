@@ -1,0 +1,72 @@
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f4f6f8;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    -fx-background-color: #1e293b;
+}
+
+.logo {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 25 0;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 15px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-pref-width: 170px;
+    -fx-padding: 12 15;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #334155;
+    -fx-text-fill: white;
+}
+
+/* MAIN CONTENT */
+
+.content {
+    -fx-background-color: #f4f6f8;
+}
+
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+/* DASHBOARD CARDS */
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(0, 0, 0, 0.08),
+            10,
+            0,
+            0,
+            3
+    );
+}
+
+.card-title {
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748b;
+}
+
+.card-value {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f172a;
+}
