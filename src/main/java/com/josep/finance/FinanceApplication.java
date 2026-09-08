@@ -6,6 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,13 +34,28 @@ public class FinanceApplication extends Application {
         sidebar.setPrefWidth(220);
         sidebar.getStyleClass().add("sidebar");
 
-        Label logo = new Label("💰 Finance");
+        Label logo = new Label("Finance");
         logo.getStyleClass().add("logo");
 
-        Button dashboardButton = new Button("🏠 Dashboard");
-        Button transactionsButton = new Button("💳 Transactions");
-        Button reportsButton = new Button("📊 Reports");
-        Button settingsButton = new Button("⚙ Settings");
+        Button dashboardButton = new Button(
+                "Dashboard",
+                createIcon("dashboard.png")
+        );
+
+        Button transactionsButton = new Button(
+                "Transactions",
+                createIcon("transactions.png")
+        );
+
+        Button reportsButton = new Button(
+                "Reports",
+                createIcon("reports.png")
+        );
+
+        Button settingsButton = new Button(
+                "Settings",
+                createIcon("settings.png")
+        );
 
         dashboardButton.getStyleClass().add("menu-button");
         transactionsButton.getStyleClass().add("menu-button");
@@ -114,7 +131,6 @@ public class FinanceApplication extends Application {
 
         Scene scene = new Scene(root, 1100, 700);
 
-        // Load CSS
         scene.getStylesheets().add(
                 getClass()
                         .getResource("/styles.css")
@@ -140,6 +156,7 @@ public class FinanceApplication extends Application {
         valueLabel.getStyleClass().add("card-value");
 
         VBox card = new VBox(10);
+
         card.setAlignment(Pos.CENTER_LEFT);
         card.setPadding(new Insets(20));
         card.setPrefWidth(180);
@@ -153,6 +170,28 @@ public class FinanceApplication extends Application {
         );
 
         return card;
+    }
+
+
+    // =========================
+    // CREATE MENU ICON
+    // =========================
+
+    private ImageView createIcon(String fileName) {
+
+        Image image = new Image(
+                getClass().getResourceAsStream(
+                        "/icons/" + fileName
+                )
+        );
+
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        imageView.setPreserveRatio(true);
+
+        return imageView;
     }
 
 
