@@ -12,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import com.josep.finance.view.*;
+
 
 public class FinanceApplication extends Application {
 
@@ -72,20 +74,15 @@ public class FinanceApplication extends Application {
 
 
         // =========================
-        // MAIN CONTENT
+        // DASHBOARD CONTENT
         // =========================
 
-        VBox content = new VBox(25);
-        content.setPadding(new Insets(35));
-        content.getStyleClass().add("content");
+        VBox dashboardContent = new VBox(25);
+        dashboardContent.setPadding(new Insets(35));
+        dashboardContent.getStyleClass().add("content");
 
         Label title = new Label("Dashboard");
         title.getStyleClass().add("page-title");
-
-
-        // =========================
-        // DASHBOARD CARDS
-        // =========================
 
         HBox cards = new HBox(20);
 
@@ -116,10 +113,33 @@ public class FinanceApplication extends Application {
                 savingsCard
         );
 
-        content.getChildren().addAll(
+        dashboardContent.getChildren().addAll(
                 title,
                 cards
         );
+
+
+        // =========================
+        // TRANSACTIONS VIEW
+        // =========================
+
+        TransactionsView transactionsView =
+                new TransactionsView();
+
+
+        // =========================
+        // NAVIGATION
+        // =========================
+
+        dashboardButton.setOnAction(event -> {
+            root.setCenter(dashboardContent);
+        });
+
+        transactionsButton.setOnAction(event -> {
+            root.setCenter(
+                    transactionsView.createView()
+            );
+        });
 
 
         // =========================
@@ -127,7 +147,7 @@ public class FinanceApplication extends Application {
         // =========================
 
         root.setLeft(sidebar);
-        root.setCenter(content);
+        root.setCenter(dashboardContent);
 
         Scene scene = new Scene(root, 1100, 700);
 
